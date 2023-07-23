@@ -56,7 +56,7 @@ class MyMAVlink():
             0,0,0,
             0,0
         )
-    def get_param(self):
+    def get_attitude(self):
         self.connection.mav.command_long_send(
             self.target_system,
             self.target_component,
@@ -71,8 +71,8 @@ class MyMAVlink():
             if not msg:
                 continue
             else:
-                print(msg.roll)
-                break
+                return round(msg.roll,2), round(msg.pitch,2), round(msg.yaw,2)
+                
 
     def get_gps(self):
         self.connection.mav.command_long_send(
@@ -89,7 +89,22 @@ class MyMAVlink():
             if not msg:
                 continue
             else:
+                return round(msg.lat,1), round(msg.lon,1), round(msg.alt,1)
+    def get_gps_test(self):
+        self.connection.mav.command_long_send(
+            self.target_system,
+            self.target_component,
+            mavutil.mavlink.MAV_CMD_REQUEST_MESSAGE,
+            0,
+            33,
+            0, 0, 0, 0, 0, 0
+        )
+
+        while True:
+            msg = self.connection.recv_match(type = "GLOBAL_POSITION_INT", blocking = False)
+            if not msg:
+                continue
+            else:
                 print(msg)
                 break
-    
         

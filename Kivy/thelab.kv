@@ -1,5 +1,70 @@
-MainWidget:
+StackLayoutExample:
+<StackLayoutExample>:
 
+<GridLayoutExample>:
+    cols: 2
+    Button:
+        text:"A"
+    BoxLayout:
+        orientation: 'horizontal'
+    
+        Button:
+            text: 'A'
+        Button:
+            text: 'B'
+            size_hint: 0.5,None
+            width: '100dp'
+            height: '100dp'
+            # x, center_x, right
+            # y, center_y, top
+            pos_hint:{'center_x': 0.5, 'y':0.5}
+        BoxLayout:
+            orientation: 'vertical'
+            Button:
+                text: 'C' 
+            Button:
+                text: 'C' 
+            Button:
+                text: 'C' 
+            Button:
+                text: 'C' 
+    Button:
+        text:"C"
+<AnchorLayoutExample>:
+    # right, left, center(default)
+    #anchor_x
+    # bottom, top, center(default)
+    anchor_y: 'bottom'
+    Button:
+        text: 'A'
+        size_hint: 0.1, 0.1
+    Button:
+        text: 'B'
+        size_hint: 0.1, 0.1
+
+<BoxLayoutExample>:
+    orientation: 'horizontal'
+    
+    Button:
+        text: 'A'
+    Button:
+        text: 'B'
+        size_hint: 0.5,None
+        width: '100dp'
+        height: '100dp'
+        # x, center_x, right
+        # y, center_y, top
+        pos_hint:{'center_x': 0.5, 'y':0.5}
+    BoxLayout:
+        orientation: 'vertical'
+        Button:
+            text: 'C' 
+        Button:
+            text: 'C' 
+        Button:
+            text: 'C' 
+        Button:
+            text: 'C' 
 <MainWidget>:
     Button:
         text: "Wassup"

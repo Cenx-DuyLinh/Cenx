@@ -3,6 +3,7 @@ from tkinter import font
 from tkinter import messagebox
 from MAVlink_Test import MyMAVlink
 from threading import Thread
+import time
 
 class DroneControlApp:
     def __init__(self) -> None:
@@ -24,7 +25,22 @@ class DroneControlApp:
         self.create_movement_frame()
         self.create_test_value()
 
+        thread_test = Thread(target=self.update_value,args=(),daemon=True)
+        thread_test.start()
+
         self.window.mainloop()
+
+    def update_value(self):
+        while True:
+            new_roll,new_pitch,new_yaw = self.MyCopter.get_attitude()
+            new_lat,new_lon,new_alt = self.MyCopter.get_gps()
+            self.label_test_name['0r'].config(text=new_roll)
+            self.label_test_name['0p'].config(text=new_pitch)
+            self.label_test_name['0y'].config(text=new_yaw)
+            self.label_test_name['0la'].config(text=new_lat)
+            self.label_test_name['0lo'].config(text=new_lon)
+            self.label_test_name['0a'].config(text=new_alt)
+            time.sleep(0.1)
 
     def create_search_frame(self):
         self.frame_search = tk.Frame(self.window,borderwidth=1,relief='solid',width=300, height=350)
@@ -151,27 +167,43 @@ class DroneControlApp:
         self.button_up.place(x = 450, y = 50)
         self.button_down.place(x = 450, y = 140)
     def create_test_value(self):
-        
-        self.frame_test = tk.Frame(self.window,borderwidth=1,relief='solid',width=300, height=350)
+        self.frame_test = tk.Frame(self.window,borderwidth=1,relief='solid',width=400, height=350)
         self.frame_test.grid_propagate(False)
         self.frame_test.grid(row=1,column=2,padx = 20,pady=20)
-        self.label_test_folder_name = ['Pitch','Roll','Yaw','Altitude'] 
+        self.label_test_folder_name = ['Pitch','Roll','Yaw',
+                                       'Latitude','Longitude','Altitude',
+                                       '0p','0r','0y',
+                                       '0la','0lo','0a'
+                                       ] 
         self.label_test_folder_position =  [0,0,
                                             0,1,
                                             0,2,
-                                            0,3,]
+                                            
+                                            2,0,
+                                            2,1,
+                                            2,2,
+                                          
+                                            1,0,
+                                            1,1,
+                                            1,2,
+                                          
+                                            4,0,
+                                            4,1,
+                                            4,2,
+                                          
+                                            ]
         self.label_test_name = {}
         for counter in range(len(self.label_test_folder_name)):
             name_buffer = f"{self.label_test_folder_name[counter]}"
             self.label_test_name[name_buffer] = tk.Label(master=self.frame_test,
                                                          text = self.label_test_folder_name[counter],
                                                          borderwidth=1,relief='solid',
-                                                         width=6,height=1)
+                                                         width=10,height=1)
             self.label_test_name[name_buffer].grid(row=self.label_test_folder_position[counter*2],
                                                    column=self.label_test_folder_position[counter*2+1],
                                                    padx =15,pady=20)
-        self.button_test = tk.Button(master=self.frame_test,text='Get',command=lambda: self.MyCopter.get_param())
-        self.button_test.grid(row=1,column=1)
+        
+
 def RUN():
     object = DroneControlApp()
 

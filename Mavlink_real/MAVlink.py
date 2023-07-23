@@ -85,6 +85,29 @@ class MyMAVlink():
             0, 0, 0, 0, 0, 0, 0
         )
     
+    def set_mode(self, mode):
+        """_summary_
+
+        Args:
+            mode (_int_):   3 == auto
+            
+                            4 == guided
+                            
+                            5 == loiter
+                            
+                            6 == RTL
+                            
+                            9 == land
+        """
+        self.connection.mav.command_long_send(
+            self.target_system,
+            self.target_component,
+            mavutil.mavlink.MAV_CMD_DO_SET_MODE,
+            0,
+            1, mode,
+            0, 0, 0, 0, 0
+        )
+        
     def set_home(self, data):
         mav_frame = 10
         latitude, longitude, altitude = data
@@ -170,6 +193,17 @@ class MyMAVlink():
             0, 0, 0, 0, 0, 0
         )
 
+    def set_current_mission(self, mission_id):
+        self.connection.mav.command_long_send(
+            self.target_system,
+            self.target_component,
+            mavutil.mavlink.MAV_CMD_DO_SET_MISSION_CURRENT,
+            0,
+            mission_id,
+            1, #reset mission true = 1, false = 0
+            0, 0, 0, 0, 0
+        )
+        
     def rc_channel_override(self, data):
         channels, pwms = data
         rc_channel_value = [65535 for _ in range(8)]
@@ -181,4 +215,48 @@ class MyMAVlink():
             *rc_channel_value
         )
         
-    #def get_gps_position
+    def get_gps_position(self):
+        self.connection.mav.command_long_send(
+            self.target_system,
+            self.target_component,
+            mavutil.mavlink.MAV_CMD_REQUEST_MESSAGE,
+            0,
+            33,
+            0, 0, 0, 0, 0, 0
+        )
+        time.sleep(0.5)
+        time_out = 10
+        timer = 0
+        while True:
+            msg = self.connection.recv_match(type = "GLOBAL_POSITION_INT", blocking = False)
+            timer += 1
+            if timer >= time_out:
+                print("Time out. No GPS recieved")
+                break
+            if not msg:
+                continue
+            else:
+                print(msg)
+                # print(f"Got message: {msg.get_type()}")
+                # print(f"Latitude, Longitude, : {msg.lat/1e7, msg.lon/1e7}")
+                # print(f"Altitude ASL, Altitude AGL: {msg.alt/1e3, msg.relative_alt/1e3}")
+                break
+            
+            
+    def move_forward(self, distance):
+        self.set_frame_position([distance, 0, 0])
+    
+    def move_backward(self, distance):
+        self.set_frame_position([-distance, 0, 0])
+    
+    def move_left(self, distance):
+        self.set_frame_position([0, -distance, 0])
+        
+    def move_right(self, distance):
+        self.set_frame_position([0, distance, 0])
+        
+    def move_up(self, distance):
+        self.set_frame_position([0, 0, -distance])
+        
+    def move_down(self, distance):
+        self.set_frame_position([0, 0, distance])

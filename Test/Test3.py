@@ -5,7 +5,7 @@ import tkinter as tk
 window = tk.Tk()
 
 # Open the image using PIL
-image = Image.open("logo_bk.png")
+image = Image.open(r'C:\Users\Duy Linh\Desktop\Desktop\[STUDY]\Python Code\Cenx\Test')
 
 # Convert the image to a Tkinter-compatible format
 tkimage = ImageTk.PhotoImage(image)

@@ -1,0 +1,16 @@
+
+@startuml
+participant Main as main
+box "MVVM Format"
+participant View as view
+participant Model as model
+participant ViewModel as viewmodel
+end box
+
+main -> model  : call
+note right: MyApp.dart 
+model -> view: call
+note left: MyAppView.dart
+view -> view: call 
+note left: MyHomePageView.dart
+@enduml

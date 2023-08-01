@@ -5,8 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "program": "C:\\Users\\Duy Linh\\Desktop\\Desktop\\[STUDY]\\VSCode\\Cenx\\Dart\\basics.dart",
-            // "program": "C:\\Users\\Duy Linh\\Desktop\\Desktop\\[STUDY]\\VSCode\\Cenx\\Dart\\test.dart",
+            
+            // "program": "C:\\Users\\Duy Linh\\Desktop\\Desktop\\[STUDY]\\VSCode\\Cenx\\Dart\\myfirstapp\\lib\\main.dart",
+            // "program": "C:\\Users\\Duy Linh\\Desktop\\Desktop\\[STUDY]\\VSCode\\Cenx\\Dart\\basics.dart",
+            "program": "C:\\Users\\Duy Linh\\Desktop\\Desktop\\[STUDY]\\VSCode\\Cenx\\Dart\\test.dart",
             "name": "Dart & Flutter",
             "request": "launch",
             "type": "dart"
